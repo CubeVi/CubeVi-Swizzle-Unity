@@ -418,9 +418,9 @@ MonoBehaviour:
   useCameraPrefab: 0
   TargetTransform: {fileID: 242829904}
   FocalPlane: 10
-  useTartgetFocal: 1
+  useTargetFocal: 1
   showFocalPlane: 0
-  showFrustumFrame: 1
+  showFrustumFrame: 0
 --- !u!4 &404728626
 Transform:
   m_ObjectHideFlags: 0

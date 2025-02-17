@@ -1,5 +1,4 @@
-﻿using CubeVi_Swizzle;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -20,7 +19,7 @@ namespace CubeVi_Swizzle
         public Transform TargetTransform;
         [Range(0.1f, 500.0f)]
         public float FocalPlane = 10f;
-        public bool useTartgetFocal = true;
+        public bool useTargetFocal = true;
 
         [Header("Focus and Frustum")]
         public bool showFocalPlane = false;
@@ -420,7 +419,7 @@ namespace CubeVi_Swizzle
 
         private void UpdateTarget()
         {
-            if (useTartgetFocal)
+            if (useTargetFocal)
             {
                 Target.position = TargetTransform.position;
                 FocalPlane = Vector3.Distance(Root.position, Target.position);
