@@ -1,70 +1,70 @@
-# BatchCameraManager 使用文档
+# BatchCameraManager Usage Documentation
 
-## 简介
-`BatchCameraManager` 是一个用于批量管理相机的Unity脚本。它可以根据给定的参数创建和管理一组相机，并将这些相机的渲染结果合并到一个网格纹理中。此外，它还可以显示视锥体框架和焦平面，有助于调试和可视化。
+## Introduction
+`BatchCameraManager` is a Unity script for batch camera management. It can create and manage a group of cameras based on given parameters and merge the rendering results of these cameras into a grid texture. Additionally, it can display frustum frames and focal planes, which helps with debugging and visualization.
 
-## 1. 版本特点
-- 支持自定义相机阵列位置Position、朝向Rotation;
-- 支持3种计算原始焦平面方式,用户设定、自动跟随目标、射线检测目标;
-- 支持焦平面倍率,相对以上3种计算原始焦平面的方式(特别适用用的场景是:用在锁定目标追焦时,期望沿视线相对被锁定目标做焦平面的移动);
-- 支持显示焦平面与建议的最佳观看视锥体,用以协助开发者确认人比较合适的3D内容显示范围;
-- 支持使用相机预制体与否,可以通过相机预制体添加后处理特效收;
-- 支持设定相机阵列的属性,图层、远近裁剪面;
+## 1. Version Features
+- Supports custom camera array position and rotation;
+- Supports 3 methods for calculating original focal plane: user-defined, automatic target following, ray detection target;
+- Supports focal plane adjustment by multiplier;
+- Supports displaying focal plane and recommended optimal viewing frustum to assist developers in determining appropriate 3D content display range;
+- Supports using camera prefabs or not, post-processing effects can be added through camera prefabs;
+- Supports setting camera array properties, layers, near and far clipping planes;
 
-## 2. 插件安装和使用
+## 2. Plugin Installation and Usage
 
-### 2.1 添加依赖
-确保你的Unity项目已经安装了必要的依赖库，包括但不限于：
-- 可以支持Unity 2017及以上版本;
-- `System.Security.Cryptography` 用于处理加密解密操作，一般包含在Unity默认环境中;
-- `Newtonsoft.Json` 用于解析json数据，可在 Package Manager 中通过名称添加 `com.unity.nuget.newtonsoft-json`;
+### 2.1 Adding Dependencies
+Ensure your Unity project has installed the following dependency libraries:
+- Supports Unity 2017 and above versions;
+- `System.Security.Cryptography` for handling encryption and decryption operations, generally included in Unity's default environment;
+- `Newtonsoft.Json` for parsing JSON data, can be added in Package Manager by name `com.unity.nuget.newtonsoft-json`;
 
 <img src="./img/Newtonsoft.jpg" width="720" height="auto">
 
-### 2.2 插件导入和脚本添加
-1. 插件拖⼊unity项⽬，点击导⼊
+### 2.2 Plugin Import and Script Addition
+1. Drag the plugin into the Unity project and click import
 
 <img src="./img/Package.jpg" width="720" height="auto">
 
-2. 将 `BatchCameraManager.cs` 脚本添加到你的Unity项目中(添加在任意物体上)。
+2. Add the `BatchCameraManager.cs` script to your Unity project (attach to any object).
 
 <img src="./img/Scripts.jpg" width="720" height="auto">
 
-### 2.3 参数说明
-以下是在Unity编辑器中设置的参数说明：
-- **Root (Transform)**: 所有相机和目标物体的父节点，相机阵列将跟随此相机设置的位置Position，朝向Rotation。
-- **BatchCameraPrefab (Camera)**: (可选) 如果`useCameraPrefab`设置为true，则使用该预制件来实例化相机。
-- **useCameraPrefab (bool)**: 决定是否使用预制件来实例化相机。
-- **TargetTransform (Transform)**: 作为焦平面目标的游戏对象的Transform，如果`useTargetFocal`设置为true,此参数不能为空
-- **FocalPlane (float)**: 焦平面的距离，范围为0.1到500.0，如果`useTargetFocal`设置为false，可以通过拖拽修改
-- **useTargetFocal (bool)**: 决定焦平面是否使用`TargetTransform`的位置。
-- **showFocalPlane (bool)**: 决定是否显示焦平面。
-- **showFrustumFrame (bool)**: 决定是否显示视锥体框架。
+### 2.3 Parameter Description
+The following are parameter descriptions set in the Unity editor:
+- **Root (Transform)**: The parent node of all cameras and target objects. The camera array will follow the position and rotation set by this camera.
+- **BatchCameraPrefab (Camera)**: (Optional) If `useCameraPrefab` is set to true, this prefab will be used to instantiate cameras.
+- **useCameraPrefab (bool)**: Determines whether to use prefabs to instantiate cameras.
+- **TargetTransform (Transform)**: The Transform of the game object serving as the focal plane target. This parameter cannot be empty if `useTargetFocal` is set to true.
+- **FocalPlane (float)**: The distance of the focal plane, ranging from 0.1 to 500.0. If `useTargetFocal` is set to false, it can be modified by dragging.
+- **useTargetFocal (bool)**: Determines whether the focal plane uses the position of `TargetTransform`.
+- **showFocalPlane (bool)**: Determines whether to display the focal plane.
+- **showFrustumFrame (bool)**: Determines whether to display the frustum frame.
 
-### 2.4 焦平面说明
-焦平面是一个虚拟平面，用于确定虚拟相机渲染的焦点位置。当`useTargetFocal`设置为true时，焦平面的距离将根据`TargetTransform`的位置自动调整。当设置为false时，焦平面的距离由`FocalPlane`参数控制。
+### 2.4 Focal Plane Description
+The focal plane is a virtual plane used to determine the focus position for virtual camera rendering. When `useTargetFocal` is set to true, the focal plane distance will automatically adjust based on the position of `TargetTransform`. When set to false, the focal plane distance is controlled by the `FocalPlane` parameter.
 
-焦平面是3D显示器上显示最清楚的位置，处于Root和焦平面之间的物体会有“出屏感”，而处于Root到焦平面延长线上的物体则会有入屏感
+The focal plane is the position where the 3D display shows the clearest image. Objects between the Root and focal plane will have a "pop-out" effect, while objects on the extension line from Root to focal plane will have a "pop-in" effect.
 
-**示例图片**:
+**Example Image**:
 <img src="./img/FocalPlane.jpg" width="720" height="auto">
 
-### 2.5 视锥体说明
-视锥体框架是相机的视锥体范围的可视化表示，包括近裁剪平面和远裁剪平面。通过设置`showFrustumFrame`为true，可以在场景中显示视锥体框架，方便调试和理解相机的视角范围。
+### 2.5 Frustum Description
+The frustum frame is a visual representation of the camera's frustum range, including near and far clipping planes. By setting `showFrustumFrame` to true, the frustum frame can be displayed in the scene, making it convenient for debugging and understanding the camera's viewing angle range.
 
-视锥体指示了3D显示器最佳观看的出入屏范围，配合焦平面可以得到一个出屏区域和一个入屏区域，可以方便的调试视觉效果，注意超出该范围的物体在显示器上会有比较明显的模糊
+The frustum indicates the optimal viewing range for pop-out and pop-in effects on the 3D display. Combined with the focal plane, it provides a pop-out area and a pop-in area, making it easy to debug visual effects. Note that objects beyond this range will appear noticeably blurred on the display.
 
-**示例图片**:
+**Example Image**:
 <img src="./img/FrustumFrame.jpg" width="720" height="auto">
 
-### 2.6 打包设置
-1. 确保所有必要的资源和脚本已添加到项目中。
+### 2.6 Build Settings
+1. Ensure all necessary resources and scripts have been added to the project.
 
-2. 在Unity编辑器中，选择`Edit` -> `Project Settings` -> `Graphics`，在Always Included Shaders中添加Shader用于交织：`CustomRenderTexture/MultiView`
+2. In the Unity editor, select `Edit` -> `Project Settings` -> `Graphics`, and add the shader for interlacing in Always Included Shaders: `CustomRenderTexture/MultiView`
 
-**示例图片**:
+**Example Image**:
 <img src="./img/Graphics.jpg" width="720" height="auto">
 
-## 3. 问题处理
-- 如果遇到相机创建失败，焦平面或视锥体等错误显示，首先检查是否正确设置了`Root`和`TargetTransform`参数,其中Root必须设置，且二者不能相同
-- 如果在运行时环境中找不到分辨率为1440x2560的显示器，脚本将禁用自身，请确保目标显示器已正确连接并配置。
+## 3. Troubleshooting
+- If you encounter camera creation failures, focal plane or frustum display errors, first check whether the `Root` and `TargetTransform` parameters are correctly set. Root must be set, and the two cannot be the same.
+- If a display with resolution 1440x2560 cannot be found in the runtime environment, the script will disable itself. Please ensure the target display is properly connected and configured.
